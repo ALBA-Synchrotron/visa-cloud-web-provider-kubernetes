@@ -4,6 +4,11 @@ import os
 class BaseConfig:
     AUTH_API_KEY: str = os.environ.get("AUTH_API_KEY", "rubber-duck")
     AUTH_API_KEY_HEADER_NAME: str = os.environ.get("AUTH_API_KEY_HEADER_NAME", "X-Auth-Token")
+    K8S_CONFIG_SOURCE: str = os.environ.get("K8S_CONFIG_SOURCE", "kubeconfig")
+    K8S_CONFIG_FILE_PATH: str = os.environ.get("K8S_CONFIG_FILE_PATH", "/kubeconfig")
+    LOG_LEVEL: str = os.environ.get("LOG_LEVEL", "DEBUG")
+    K8S_VISA_API_GROUP: str = os.environ.get("K8S_VISA_API_GROUP", "cloudprovider.visa.k8s")
+    K8S_VISA_API_VERSION: str = os.environ.get("K8S_VISA_API_VERSION", "v1")
 
 
 class DevConfig(BaseConfig):
@@ -15,8 +20,8 @@ class TestConfig(BaseConfig):
 
 
 class ProdConfig(BaseConfig):
-    pass
-
+    K8S_CONFIG_SOURCE: str = os.environ.get("K8S_CONFIG_SOURCE", "serviceaccount")
+    LOG_LEVEL: str = os.environ.get("LOG_LEVEL", "INFO")
 
 def get_config() -> BaseConfig:
     env: str = os.getenv("FLASK_ENV", "dev")
