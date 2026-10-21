@@ -9,11 +9,12 @@ from flask.typing import ResponseReturnValue
 
 from app import create_app
 from auth import require_api_key
+from config import UnitTestConfig
 
 
 @pytest.fixture
 def app() -> Generator[Flask, Any, None]:
-    app = create_app("app.config.TestConfig")
+    app = create_app(UnitTestConfig())
 
     @app.get("/protected", endpoint="test_protected")
     @require_api_key

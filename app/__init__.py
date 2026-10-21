@@ -23,6 +23,3 @@ def create_app(config_object: app_config.BaseConfig) -> Flask:
         return jsonify({"status": ALL_COOLIO}), HTTPStatus.OK
 
     return app
-
-
-app: Flask = create_app(app_config.get_config())

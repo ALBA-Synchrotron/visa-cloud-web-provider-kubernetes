@@ -44,5 +44,7 @@ def validate_visa_kubernetes_crd_are_available(app) -> None:
 
 
 def initialize_kubernetes(app: Flask) -> None:
-    load_kubernetes_config(app)
-    validate_visa_kubernetes_crd_are_available(app)
+    with app.app_context():
+        if not app.config["TESTING"] and app.config["TEST_MODE"] != "unit":
+            load_kubernetes_config(app)
+            validate_visa_kubernetes_crd_are_available(app)
