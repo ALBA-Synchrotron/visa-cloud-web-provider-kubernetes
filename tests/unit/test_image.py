@@ -4,7 +4,6 @@ import pytest
 from flask import current_app, url_for
 from werkzeug.test import TestResponse
 
-from fixtures.flavour import DUMMY_FLAVOURS
 from fixtures.image import DUMMY_IMAGES
 
 ENDPOINT_NAME_PREFIX: str = "v1.image"

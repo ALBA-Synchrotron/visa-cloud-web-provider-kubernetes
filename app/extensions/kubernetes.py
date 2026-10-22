@@ -4,7 +4,7 @@ from kubernetes.client import ApiException
 from kubernetes.client.exceptions import NotFoundException
 
 from labels.kubernetes import K8S_VISA_API_GROUP, K8S_VISA_API_VERSION, VISA_CLOUD_FLAVOURS, VISA_CLOUD_FLAVOUR, \
-    VISA_CLOUD_IMAGE, VISA_CLOUD_IMAGES
+    VISA_CLOUD_IMAGE, VISA_CLOUD_IMAGES, VISA_CLOUD_SECURITY_GROUPS
 from utils.exceptions import KubernetesError, KubernetesNotFoundError
 
 
@@ -77,3 +77,10 @@ class KubernetesExtension:
             raise KubernetesNotFoundError(obj_name=image_name, obj_type_name=VISA_CLOUD_IMAGES)
         except (ApiException, KeyError) as e:
             raise KubernetesError(f"Error listing {VISA_CLOUD_IMAGES}: {e}")
+
+    @classmethod
+    def list_visa_cloud_security_groups(cls) -> list:
+        try:
+            return cls.__list_ns_cluster_custom_object(VISA_CLOUD_SECURITY_GROUPS)
+        except (ApiException, KeyError) as e:
+            raise KubernetesError(f"Error listing {VISA_CLOUD_SECURITY_GROUPS}: {e}")

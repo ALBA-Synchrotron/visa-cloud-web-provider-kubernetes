@@ -4,6 +4,7 @@ from flask import Flask
 
 from fixtures.flavour import DUMMY_FLAVOURS
 from fixtures.image import DUMMY_IMAGES
+from fixtures.security_group import DUMMY_SECURITY_GROUPS
 from utils.exceptions import KubernetesNotFoundError
 from utils.kubernetes import VISA_K8S_CRD_LIST
 
@@ -35,3 +36,7 @@ class DummyKubernetesExtension:
             if i.get("metadata").get("name") == image_name:
                 return i
         raise KubernetesNotFoundError("", "")
+
+    @classmethod
+    def list_visa_cloud_security_groups(cls) -> list:
+        return DUMMY_SECURITY_GROUPS
