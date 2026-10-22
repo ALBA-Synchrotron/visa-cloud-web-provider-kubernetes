@@ -1,6 +1,8 @@
 from http import HTTPStatus
 from flask import Flask, jsonify
 from flask.typing import ResponseReturnValue
+
+from error_handlers import register_error_handlers
 from labels.common import ALL_COOLIO, INIT_APP
 
 import config as app_config
@@ -15,7 +17,9 @@ def create_app(config_object: app_config.BaseConfig) -> Flask:
 
     configure_logging(app)
     app.logger.info(INIT_APP)
+
     register_v1(app)
+    register_error_handlers(app)
 
     initialize_kubernetes(app)
 

@@ -12,3 +12,6 @@ ERR_INVALID_API_KEY: str = "Invalid or missing API key"
 ERR_K8S_CONF_LOAD: str = "Error loading Kubernetes config"
 ERR_K8S_CRD_NOT_FOUND: str = "VISA-k8s CRDs not found in current cluster configuration, check cluster and k8s client config"
 
+# General error suffixes
+NOT_FOUND_SFX: str = "not found"
+

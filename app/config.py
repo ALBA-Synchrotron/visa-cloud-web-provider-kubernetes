@@ -6,9 +6,8 @@ class BaseConfig:
     AUTH_API_KEY_HEADER_NAME: str = os.environ.get("AUTH_API_KEY_HEADER_NAME", "X-Auth-Token")
     K8S_CONFIG_SOURCE: str = os.environ.get("K8S_CONFIG_SOURCE", "kubeconfig")
     K8S_CONFIG_FILE_PATH: str = os.environ.get("K8S_CONFIG_FILE_PATH", "/kubeconfig")
+    K8S_NAMESPACE: str = os.environ.get("K8S_NAMESPACE", "visa-pods-test")
     LOG_LEVEL: str = os.environ.get("LOG_LEVEL", "DEBUG")
-    K8S_VISA_API_GROUP: str = os.environ.get("K8S_VISA_API_GROUP", "cloudprovider.visa.k8s")
-    K8S_VISA_API_VERSION: str = os.environ.get("K8S_VISA_API_VERSION", "v1")
     TEST_MODE: str = ""
     HOST: str = os.getenv("API_HOST", "0.0.0.0")
     PORT: int = int(os.getenv("API_PORT", "5000"))

@@ -1,9 +1,9 @@
 from flask import Flask
 from kubernetes import config as k8s_config
 
+from extensions.kubernetes import KubernetesExtension
 from labels.common import INIT_K8S, ERR_K8S_CONF_LOAD, ERR_K8S_CRD_NOT_FOUND
 from utils.exceptions import APIConfigError, VISAK8sInstallError
-from extensions import KubernetesExtension
 
 VISA_K8S_CRD_LIST: list = ['visacloudsecuritygroups', 'visacloudimages', 'visainstances', 'visainstances/status',
                            'visacloudflavours', 'visaclouddevices', 'visasidecarconfigs']
@@ -24,17 +24,12 @@ def load_kubernetes_config(app: Flask) -> None:
             app.logger.error(error_msg)
             raise APIConfigError(error_msg)
 
-    app.extensions["kubernetes"] = KubernetesExtension()
-
 
 def validate_visa_kubernetes_crd_are_available(app) -> None:
     with app.app_context():
-        visa_k8s_api_group: str = app.config["K8S_VISA_API_GROUP"]
-        visa_kis_api_version: str = app.config["K8S_VISA_API_VERSION"]
-
         k8s = app.extensions["kubernetes"]
 
-        visa_kinds = k8s.get_api_resources(group=visa_k8s_api_group, version=visa_kis_api_version)
+        visa_kinds = k8s.get_visa_k8s_cloud_api_resources()
         try:
             assert sorted([i.name for i in visa_kinds]) == sorted(VISA_K8S_CRD_LIST)
         except AssertionError:
@@ -45,6 +40,9 @@ def validate_visa_kubernetes_crd_are_available(app) -> None:
 
 def initialize_kubernetes(app: Flask) -> None:
     with app.app_context():
+        app.extensions["kubernetes"] = KubernetesExtension()
+
         if not app.config["TESTING"] and app.config["TEST_MODE"] != "unit":
             load_kubernetes_config(app)
-            validate_visa_kubernetes_crd_are_available(app)
+
+        validate_visa_kubernetes_crd_are_available(app)
