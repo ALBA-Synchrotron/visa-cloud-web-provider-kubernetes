@@ -1,10 +1,7 @@
 from http import HTTPStatus
 
 import pytest
-from flask import current_app, url_for
-from werkzeug.test import TestResponse
-
-from fixtures.flavour import DUMMY_FLAVOURS
+from flask import current_app
 
 ENDPOINT_NAME_PREFIX: str = "v1.hypervisor"
 HYPERVISOR_ENDPOINTS: list[tuple[str, dict]] = [

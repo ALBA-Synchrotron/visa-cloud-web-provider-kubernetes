@@ -3,6 +3,7 @@ from types import SimpleNamespace
 from flask import Flask
 
 from fixtures.flavour import DUMMY_FLAVOURS
+from fixtures.image import DUMMY_IMAGES
 from utils.exceptions import KubernetesNotFoundError
 from utils.kubernetes import VISA_K8S_CRD_LIST
 
@@ -18,8 +19,19 @@ class DummyKubernetesExtension:
         return DUMMY_FLAVOURS
 
     @classmethod
-    def get_visa_cloud_flavour(cls, name: str) -> list:
+    def get_visa_cloud_flavour(cls, flavour_name: str) -> list:
         for i in DUMMY_FLAVOURS:
-            if i.get("metadata").get("name") == name:
+            if i.get("metadata").get("name") == flavour_name:
+                return i
+        raise KubernetesNotFoundError("", "")
+
+    @classmethod
+    def list_visa_cloud_images(cls) -> list:
+        return DUMMY_IMAGES
+
+    @classmethod
+    def get_visa_cloud_image(cls, image_name: str) -> object:
+        for i in DUMMY_IMAGES:
+            if i.get("metadata").get("name") == image_name:
                 return i
         raise KubernetesNotFoundError("", "")

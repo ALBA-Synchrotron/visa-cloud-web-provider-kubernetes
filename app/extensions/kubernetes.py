@@ -3,7 +3,8 @@ from kubernetes import client
 from kubernetes.client import ApiException
 from kubernetes.client.exceptions import NotFoundException
 
-from labels.kubernetes import K8S_VISA_API_GROUP, K8S_VISA_API_VERSION, VISA_CLOUD_FLAVOURS_P, VISA_CLOUD_FLAVOUR
+from labels.kubernetes import K8S_VISA_API_GROUP, K8S_VISA_API_VERSION, VISA_CLOUD_FLAVOURS, VISA_CLOUD_FLAVOUR, \
+    VISA_CLOUD_IMAGE, VISA_CLOUD_IMAGES
 from utils.exceptions import KubernetesError, KubernetesNotFoundError
 
 
@@ -48,15 +49,31 @@ class KubernetesExtension:
     @classmethod
     def list_visa_cloud_flavours(cls) -> list:
         try:
-            return cls.__list_ns_cluster_custom_object(VISA_CLOUD_FLAVOURS_P)
+            return cls.__list_ns_cluster_custom_object(VISA_CLOUD_FLAVOURS)
         except (ApiException, KeyError) as e:
-            raise KubernetesError(f"Error listing VISA cloud flavours: {e}")
+            raise KubernetesError(f"Error listing {VISA_CLOUD_FLAVOURS}: {e}")
 
     @classmethod
     def get_visa_cloud_flavour(cls, flavour_name: str) -> object:
         try:
-            return cls.__get_ns_cluster_custom_object(VISA_CLOUD_FLAVOURS_P, flavour_name)
+            return cls.__get_ns_cluster_custom_object(VISA_CLOUD_FLAVOURS, flavour_name)
         except NotFoundException as e:
             raise KubernetesNotFoundError(obj_name=flavour_name, obj_type_name=VISA_CLOUD_FLAVOUR)
         except (ApiException, KeyError) as e:
-            raise KubernetesError(f"Error listing VISA cloud flavours: {e}")
+            raise KubernetesError(f"Error listing {VISA_CLOUD_FLAVOURS}: {e}")
+
+    @classmethod
+    def list_visa_cloud_images(cls) -> list:
+        try:
+            return cls.__list_ns_cluster_custom_object(VISA_CLOUD_IMAGES)
+        except (ApiException, KeyError) as e:
+            raise KubernetesError(f"Error listing {VISA_CLOUD_IMAGES}: {e}")
+
+    @classmethod
+    def get_visa_cloud_image(cls, image_name: str) -> object:
+        try:
+            return cls.__get_ns_cluster_custom_object(VISA_CLOUD_IMAGES, image_name)
+        except NotFoundException:
+            raise KubernetesNotFoundError(obj_name=image_name, obj_type_name=VISA_CLOUD_IMAGES)
+        except (ApiException, KeyError) as e:
+            raise KubernetesError(f"Error listing {VISA_CLOUD_IMAGES}: {e}")

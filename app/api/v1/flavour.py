@@ -1,7 +1,6 @@
 from http import HTTPStatus
 
 from flask import Blueprint, current_app, Response
-from flask.typing import ResponseReturnValue
 from orjson import orjson
 
 from v1.serializers.flavour import flavours_to_json
@@ -28,7 +27,7 @@ def get_flavour_by_name(id: str) -> Response:
 
 
 @bp.get("/flavours/<id>/device_allocations", endpoint="get_device_allocation_by_flavour_name")
-def get_device_allocation_by_flavour_name(id: str) -> ResponseReturnValue:
+def get_device_allocation_by_flavour_name(id: str) -> Response:
     k8s = current_app.extensions["kubernetes"]
     _: list = k8s.get_visa_cloud_flavour(id)
     # TODO: This returns an empty list while there is no support for this function in the visa-k8s provider.
