@@ -5,15 +5,15 @@ from flask import current_app, url_for
 from werkzeug.test import TestResponse
 
 ENDPOINT_NAME_PREFIX: str = "v1.security_group"
-IMAGE_ENDPOINTS: list[tuple[str, dict]] = [
+SECURITY_GROUPS_ENDPOINTS: list[tuple[str, dict]] = [
     (f"{ENDPOINT_NAME_PREFIX}.get_all", {}),
 ]
 
 
 @pytest.mark.parametrize(
     "endpoint, url_kwargs",
-    IMAGE_ENDPOINTS,
-    ids=[e for e, _ in IMAGE_ENDPOINTS]
+    SECURITY_GROUPS_ENDPOINTS,
+    ids=[e for e, _ in SECURITY_GROUPS_ENDPOINTS]
 )
 def test_security_group_endpoints_require_auth(app, client, endpoint, url_kwargs) -> None:
     with app.test_request_context():

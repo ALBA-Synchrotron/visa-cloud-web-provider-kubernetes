@@ -8,7 +8,7 @@ bp: Blueprint = Blueprint("instances", __name__)
 
 
 @bp.get("/instances", endpoint="get_all")
-def get_all_flavours() -> Response:
+def get_all_instances() -> Response:
     k8s = current_app.extensions["kubernetes"]
     k8s_instances: list = k8s.list_visa_cloud_instances()
     return Response(instance_to_json(k8s_instances),

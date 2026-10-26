@@ -9,7 +9,7 @@ from app.extensions.kubernetes import KubernetesExtension
 
 
 @pytest.fixture(scope="session")
-def dummy_kubernetes_extension(flavours_list, images_list, security_groups_list) -> object:
+def dummy_kubernetes_extension(flavours_list, images_list, security_groups_list, devices_list) -> object:
     patcher = pytest.MonkeyPatch()
 
     class DummyKubernetesExtension:
@@ -42,6 +42,17 @@ def dummy_kubernetes_extension(flavours_list, images_list, security_groups_list)
         @classmethod
         def list_visa_cloud_security_groups(cls) -> list:
             return security_groups_list
+
+        @classmethod
+        def list_visa_cloud_devices(cls) -> list:
+            return devices_list
+
+        @classmethod
+        def get_filtered_visa_cloud_device(cls, device_type: str, identifier: str) -> list:
+            for i in devices_list:
+                if i.get("spec").get("type") == device_type and i.get("spec").get("identifier") == identifier:
+                    return i
+            raise KubernetesNotFoundError("", "")
 
     try:
         for name, method in DummyKubernetesExtension.__dict__.items():

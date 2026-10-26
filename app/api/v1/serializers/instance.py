@@ -24,7 +24,7 @@ def instance_to_dict(f) -> dict:
     }
 
 
-def instance_to_json(flavours) -> bytes:
-    if isinstance(flavours, dict):
-        return orjson.dumps(instance_to_dict(flavours))
-    return orjson.dumps([instance_to_dict(f) for f in flavours])
+def instance_to_json(instances) -> bytes:
+    if isinstance(instances, dict):
+        return orjson.dumps(instance_to_dict(instances))
+    return orjson.dumps([instance_to_dict(f) for f in instances])

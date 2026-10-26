@@ -4,7 +4,7 @@ from kubernetes.client import ApiException
 from kubernetes.client.exceptions import NotFoundException
 
 from app.labels.kubernetes import K8S_VISA_API_GROUP, K8S_VISA_API_VERSION, VISA_CLOUD_FLAVOURS, VISA_CLOUD_FLAVOUR, \
-    VISA_CLOUD_IMAGES, VISA_CLOUD_SECURITY_GROUPS, VISA_CLOUD_INSTANCES
+    VISA_CLOUD_IMAGES, VISA_CLOUD_SECURITY_GROUPS, VISA_CLOUD_INSTANCES, VISA_CLOUD_DEVICE, VISA_CLOUD_DEVICES
 from app.utils.exceptions import KubernetesError, KubernetesNotFoundError
 
 
@@ -81,7 +81,6 @@ class KubernetesExtension:
     @classmethod
     def list_visa_cloud_security_groups(cls) -> list:
         try:
-            asd = cls.__list_ns_cluster_custom_object(VISA_CLOUD_SECURITY_GROUPS)
             return cls.__list_ns_cluster_custom_object(VISA_CLOUD_SECURITY_GROUPS)
         except (ApiException, KeyError) as e:
             raise KubernetesError(f"Error listing {VISA_CLOUD_SECURITY_GROUPS}: {e}")
@@ -92,3 +91,27 @@ class KubernetesExtension:
             return cls.__list_ns_cluster_custom_object(VISA_CLOUD_INSTANCES)
         except (ApiException, KeyError) as e:
             raise KubernetesError(f"Error listing {VISA_CLOUD_INSTANCES}: {e}")
+
+    @classmethod
+    def list_visa_cloud_devices(cls) -> list:
+        try:
+            return cls.__list_ns_cluster_custom_object(VISA_CLOUD_DEVICES)
+        except (ApiException, KeyError) as e:
+            raise KubernetesError(f"Error listing {VISA_CLOUD_DEVICES}: {e}")
+
+    @classmethod
+    def get_filtered_visa_cloud_device(cls, type: str, identifier: str) -> object:
+        all_devices: list = []
+        try:
+            all_devices = cls.__list_ns_cluster_custom_object(VISA_CLOUD_DEVICES)
+        except (ApiException, KeyError) as e:
+            raise KubernetesError(f"Error listing {VISA_CLOUD_DEVICES}: {e}")
+
+        try:
+            return next(
+                d for d in all_devices
+                if (d.get("spec") or {}).get("identifier") == identifier
+                and (d.get("spec") or {}).get("type") == type
+            )
+        except StopIteration:
+            raise KubernetesNotFoundError(obj_name=identifier, obj_type_name=VISA_CLOUD_DEVICE)

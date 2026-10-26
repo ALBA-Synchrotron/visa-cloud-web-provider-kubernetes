@@ -13,7 +13,7 @@ def image_to_dict(f) -> dict:
     }
 
 
-def images_to_json(flavours) -> bytes:
-    if isinstance(flavours, dict):
-        return orjson.dumps(image_to_dict(flavours))
-    return orjson.dumps([image_to_dict(f) for f in flavours])
+def images_to_json(images) -> bytes:
+    if isinstance(images, dict):
+        return orjson.dumps(image_to_dict(images))
+    return orjson.dumps([image_to_dict(f) for f in images])

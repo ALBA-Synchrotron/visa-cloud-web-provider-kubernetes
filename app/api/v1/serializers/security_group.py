@@ -9,7 +9,7 @@ def security_group_to_dict(f) -> dict:
     }
 
 
-def security_group_to_json(flavours) -> bytes:
-    if isinstance(flavours, dict):
-        return orjson.dumps(security_group_to_dict(flavours))
-    return orjson.dumps([security_group_to_dict(f) for f in flavours])
+def security_group_to_json(sec_groups) -> bytes:
+    if isinstance(sec_groups, dict):
+        return orjson.dumps(security_group_to_dict(sec_groups))
+    return orjson.dumps([security_group_to_dict(f) for f in sec_groups])
