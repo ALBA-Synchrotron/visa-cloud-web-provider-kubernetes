@@ -4,8 +4,6 @@ import pytest
 from flask import current_app, url_for
 from werkzeug.test import TestResponse
 
-from tests.unit.fixtures.flavour import DUMMY_FLAVOURS
-
 ENDPOINT_NAME_PREFIX: str = "v1.flavour"
 FLAVOUR_ENDPOINTS: list[tuple[str, dict]] = [
     (f"{ENDPOINT_NAME_PREFIX}.get_all", {}),
@@ -25,7 +23,7 @@ def test_flavour_endpoints_require_auth(app, client, endpoint, url_kwargs):
         assert response.status_code == HTTPStatus.UNAUTHORIZED
 
 
-def test_get_all_flavours(app, client, api_key_authentication):
+def test_get_all_flavours(app, client, api_key_authentication, flavours_list):
     with app.test_request_context():
         r: TestResponse = client.get(url_for(f"{ENDPOINT_NAME_PREFIX}.get_all"),
                                      headers=api_key_authentication)
@@ -39,10 +37,10 @@ def test_get_all_flavours(app, client, api_key_authentication):
                 key in i.keys()
                 for key in ["id", "name", "cpus", "disk", "ram"]
             )
+        assert len(flavours_list) == len(r_data)
 
 
-def test_get_flavour_by_id(app, client, api_key_authentication):
-    test_flavour: dict = DUMMY_FLAVOURS[0]
+def test_get_flavour_by_id(app, client, api_key_authentication, test_flavour):
     test_flavour_name: str = test_flavour.get("metadata").get("name")
 
     with app.test_request_context():
@@ -69,8 +67,7 @@ def test_get_non_existent_flavour_by_id(app, client, api_key_authentication):
         assert r.status_code == HTTPStatus.NOT_FOUND
 
 
-def test_get_flavour_device_allocation_by_id(app, client, api_key_authentication):
-    test_flavour: dict = DUMMY_FLAVOURS[0]
+def test_get_flavour_device_allocation_by_id(app, client, api_key_authentication, test_flavour):
     test_flavour_name: str = test_flavour.get("metadata").get("name")
 
     with app.test_request_context():

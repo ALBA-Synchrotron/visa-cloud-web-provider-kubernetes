@@ -1,4 +1,3 @@
-import inspect
 from http import HTTPStatus
 from typing import Any, Generator
 
@@ -10,16 +9,10 @@ from flask.typing import ResponseReturnValue
 from app import create_app
 from app.auth import require_api_key
 from app.config import UnitTestConfig
-from app.extensions.kubernetes import KubernetesExtension
-from tests.unit.fixtures.kubernetes import DummyKubernetesExtension
+
 
 @pytest.fixture
-def app(monkeypatch) -> Generator[Flask, Any, None]:
-    for name, _ in inspect.getmembers(DummyKubernetesExtension, inspect.ismethod):
-        if name.startswith("_"):
-            continue
-        monkeypatch.setattr(KubernetesExtension, name, getattr(DummyKubernetesExtension, name))
-
+def app(dummy_kubernetes_extension) -> Generator[Flask, Any, None]:
     app = create_app(UnitTestConfig())
 
     @app.get("/protected", endpoint="test_protected")

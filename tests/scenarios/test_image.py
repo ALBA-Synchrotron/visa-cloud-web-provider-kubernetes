@@ -4,7 +4,6 @@ import pytest
 from flask import current_app, url_for
 from werkzeug.test import TestResponse
 
-from tests.unit.fixtures.image import DUMMY_IMAGES
 
 ENDPOINT_NAME_PREFIX: str = "v1.image"
 IMAGE_ENDPOINTS: list[tuple[str, dict]] = [
@@ -24,7 +23,7 @@ def test_image_endpoints_require_auth(app, client, endpoint, url_kwargs):
         assert response.status_code == HTTPStatus.UNAUTHORIZED
 
 
-def test_get_all_images(app, client, api_key_authentication):
+def test_get_all_images(app, client, api_key_authentication, images_list):
     with app.test_request_context():
         r: TestResponse = client.get(url_for(f"{ENDPOINT_NAME_PREFIX}.get_all"),
                                      headers=api_key_authentication)
@@ -38,10 +37,10 @@ def test_get_all_images(app, client, api_key_authentication):
                 key in i.keys()
                 for key in ["id", "name", "size", "createdAt"]
             )
+        assert len(r_data) == len(images_list)
 
 
-def test_get_image_by_id(app, client, api_key_authentication):
-    test_image: dict = DUMMY_IMAGES[0]
+def test_get_image_by_id(app, client, api_key_authentication, test_image):
     test_image_name: str = test_image.get("metadata").get("name")
 
     with app.test_request_context():

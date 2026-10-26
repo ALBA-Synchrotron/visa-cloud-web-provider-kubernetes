@@ -21,7 +21,7 @@ def test_security_group_endpoints_require_auth(app, client, endpoint, url_kwargs
         assert response.status_code == HTTPStatus.UNAUTHORIZED
 
 
-def test_get_all_security_groups(app, client, api_key_authentication):
+def test_get_all_security_groups(app, client, api_key_authentication, security_groups_list):
     with app.test_request_context():
         r: TestResponse = client.get(url_for(f"{ENDPOINT_NAME_PREFIX}.get_all"),
                                      headers=api_key_authentication)
@@ -35,3 +35,4 @@ def test_get_all_security_groups(app, client, api_key_authentication):
                 key in i.keys()
                 for key in ["name"]
             )
+        assert len(r_data) == len(security_groups_list)

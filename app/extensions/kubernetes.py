@@ -57,7 +57,7 @@ class KubernetesExtension:
     def get_visa_cloud_flavour(cls, flavour_name: str) -> object:
         try:
             return cls.__get_ns_cluster_custom_object(VISA_CLOUD_FLAVOURS, flavour_name)
-        except NotFoundException as e:
+        except NotFoundException:
             raise KubernetesNotFoundError(obj_name=flavour_name, obj_type_name=VISA_CLOUD_FLAVOUR)
         except (ApiException, KeyError) as e:
             raise KubernetesError(f"Error listing {VISA_CLOUD_FLAVOURS}: {e}")
