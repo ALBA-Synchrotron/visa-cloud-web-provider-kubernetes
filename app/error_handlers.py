@@ -3,8 +3,8 @@ from http import HTTPStatus
 from flask import jsonify, current_app, Flask
 from flask.typing import ResponseReturnValue
 
-from labels.common import NOT_FOUND_SFX
-from utils.exceptions import KubernetesError, KubernetesNotFoundError
+from .labels.common import NOT_FOUND_SFX
+from .utils.exceptions import KubernetesError, KubernetesNotFoundError
 
 
 def handle_k8s_error(e: KubernetesError) -> ResponseReturnValue:

@@ -4,7 +4,7 @@ import pytest
 from flask import current_app, url_for
 from werkzeug.test import TestResponse
 
-from fixtures.flavour import DUMMY_FLAVOURS
+from tests.unit.fixtures.flavour import DUMMY_FLAVOURS
 
 ENDPOINT_NAME_PREFIX: str = "v1.flavour"
 FLAVOUR_ENDPOINTS: list[tuple[str, dict]] = [

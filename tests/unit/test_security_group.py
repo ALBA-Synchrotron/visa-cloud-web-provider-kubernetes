@@ -4,8 +4,6 @@ import pytest
 from flask import current_app, url_for
 from werkzeug.test import TestResponse
 
-from fixtures.image import DUMMY_IMAGES
-
 ENDPOINT_NAME_PREFIX: str = "v1.security_group"
 IMAGE_ENDPOINTS: list[tuple[str, dict]] = [
     (f"{ENDPOINT_NAME_PREFIX}.get_all", {}),

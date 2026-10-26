@@ -1,9 +1,9 @@
 from flask import Flask
 from kubernetes import config as k8s_config
 
-from extensions.kubernetes import KubernetesExtension
-from labels.common import INIT_K8S, ERR_K8S_CONF_LOAD, ERR_K8S_CRD_NOT_FOUND
-from utils.exceptions import APIConfigError, VISAK8sInstallError
+from app.extensions.kubernetes import KubernetesExtension
+from app.labels.common import INIT_K8S, ERR_K8S_CONF_LOAD, ERR_K8S_CRD_NOT_FOUND
+from app.utils.exceptions import APIConfigError, VISAK8sInstallError
 
 VISA_K8S_CRD_LIST: list = ['visacloudsecuritygroups', 'visacloudimages', 'visainstances', 'visainstances/status',
                            'visacloudflavours', 'visaclouddevices', 'visasidecarconfigs']

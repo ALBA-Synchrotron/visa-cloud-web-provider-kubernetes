@@ -3,7 +3,7 @@ from http import HTTPStatus
 from flask import Blueprint, current_app, Response
 from orjson import orjson
 
-from v1.serializers.flavour import flavours_to_json
+from app.api.v1.serializers.flavour import flavours_to_json
 
 bp: Blueprint = Blueprint("flavour", __name__)
 

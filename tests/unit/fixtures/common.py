@@ -8,10 +8,10 @@ from flask.testing import FlaskClient
 from flask.typing import ResponseReturnValue
 
 from app import create_app
-from auth import require_api_key
-from config import UnitTestConfig
-from extensions.kubernetes import KubernetesExtension
-from fixtures.kubernetes import DummyKubernetesExtension
+from app.auth import require_api_key
+from app.config import UnitTestConfig
+from app.extensions.kubernetes import KubernetesExtension
+from tests.unit.fixtures.kubernetes import DummyKubernetesExtension
 
 @pytest.fixture
 def app(monkeypatch) -> Generator[Flask, Any, None]:

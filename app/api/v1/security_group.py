@@ -2,7 +2,7 @@ from http import HTTPStatus
 
 from flask import Blueprint, current_app, Response
 
-from v1.serializers.security_group import security_group_to_json
+from app.api.v1.serializers.security_group import security_group_to_json
 
 bp: Blueprint = Blueprint("security_group", __name__)
 

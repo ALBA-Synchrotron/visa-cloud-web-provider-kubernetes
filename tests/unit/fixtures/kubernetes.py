@@ -2,11 +2,11 @@ from types import SimpleNamespace
 
 from flask import Flask
 
-from fixtures.flavour import DUMMY_FLAVOURS
-from fixtures.image import DUMMY_IMAGES
-from fixtures.security_group import DUMMY_SECURITY_GROUPS
-from utils.exceptions import KubernetesNotFoundError
-from utils.kubernetes import VISA_K8S_CRD_LIST
+from tests.unit.fixtures.flavour import DUMMY_FLAVOURS
+from tests.unit.fixtures.image import DUMMY_IMAGES
+from tests.unit.fixtures.security_group import DUMMY_SECURITY_GROUPS
+from app.utils.exceptions import KubernetesNotFoundError
+from app.utils.kubernetes import VISA_K8S_CRD_LIST
 
 
 class DummyKubernetesExtension:

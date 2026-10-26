@@ -2,7 +2,7 @@ from http import HTTPStatus
 
 from flask import Blueprint, current_app, Response
 
-from v1.serializers.image import images_to_json
+from app.api.v1.serializers.image import images_to_json
 
 bp: Blueprint = Blueprint("image", __name__)
 

@@ -1,13 +1,11 @@
-from typing import Any, Callable, TypeVar
-
-from labels.common import ERR_API_AUTH_NOT_CONFIGURED, ERR_INVALID_API_KEY
-
 import secrets
 from functools import wraps
 from http import HTTPStatus
 from typing import Any, Callable, TypeVar, cast
 
 from flask import current_app, jsonify, request
+
+from app.labels.common import ERR_API_AUTH_NOT_CONFIGURED, ERR_INVALID_API_KEY
 
 F = TypeVar("F", bound=Callable[..., Any])
 

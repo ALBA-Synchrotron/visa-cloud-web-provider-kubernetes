@@ -4,7 +4,7 @@ import pytest
 from flask import current_app, url_for
 from werkzeug.test import TestResponse
 
-from fixtures.image import DUMMY_IMAGES
+from tests.unit.fixtures.image import DUMMY_IMAGES
 
 ENDPOINT_NAME_PREFIX: str = "v1.image"
 IMAGE_ENDPOINTS: list[tuple[str, dict]] = [
