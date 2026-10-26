@@ -12,3 +12,18 @@ spec:
   limits:
     cpu: 100m
     memory: 128Mi
+---
+apiVersion: cloudprovider.visa.k8s/v1
+kind: VISACloudFlavour
+metadata:
+  labels:
+    app.kubernetes.io/name: visa-k8s-controller
+    app.kubernetes.io/managed-by: kustomize
+  name: all-aux-services-big
+spec:
+  sidecars:
+    - name: sidecar-guacd
+  diskSize: 10Gi
+  limits:
+    cpu: 500m
+    memory: 256Mi

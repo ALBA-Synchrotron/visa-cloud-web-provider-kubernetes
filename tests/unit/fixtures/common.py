@@ -11,7 +11,7 @@ from app.auth import require_api_key
 from app.config import UnitTestConfig
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def app(dummy_kubernetes_extension) -> Generator[Flask, Any, None]:
     app = create_app(UnitTestConfig())
 
@@ -24,12 +24,12 @@ def app(dummy_kubernetes_extension) -> Generator[Flask, Any, None]:
         yield app
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def client(app) -> FlaskClient:
     return app.test_client()
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def api_key_authentication(app) -> dict:
     header_name: str = app.config["AUTH_API_KEY_HEADER_NAME"]
     api_key: str = app.config["AUTH_API_KEY"]

@@ -8,8 +8,8 @@ from app.utils.kubernetes import VISA_K8S_CRD_LIST
 from app.extensions.kubernetes import KubernetesExtension
 
 
-@pytest.fixture
-def dummy_kubernetes_extension(monkeypatch, flavours_list, images_list, security_groups_list):
+@pytest.fixture(scope="session")
+def dummy_kubernetes_extension(monkeypatch, flavours_list, images_list, security_groups_list) -> object:
     class DummyKubernetesExtension:
         @classmethod
         def get_visa_k8s_cloud_api_resources(cls, __: Flask | None = None) -> list:

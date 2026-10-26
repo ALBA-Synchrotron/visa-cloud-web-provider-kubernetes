@@ -5,7 +5,7 @@ class BaseConfig:
     AUTH_API_KEY: str = os.environ.get("AUTH_API_KEY", "rubber-duck")
     AUTH_API_KEY_HEADER_NAME: str = os.environ.get("AUTH_API_KEY_HEADER_NAME", "X-Auth-Token")
     K8S_CONFIG_SOURCE: str = os.environ.get("K8S_CONFIG_SOURCE", "kubeconfig")
-    K8S_CONFIG_FILE_PATH: str = os.environ.get("K8S_CONFIG_FILE_PATH", "/kubeconfig")
+    K8S_CONFIG_FILE_PATH: str = os.environ.get("K8S_CONFIG_FILE_PATH", "~/.kube/config")
     K8S_NAMESPACE: str = os.environ.get("K8S_NAMESPACE", "visa-pods-test")
     LOG_LEVEL: str = os.environ.get("LOG_LEVEL", "DEBUG")
     TEST_MODE: str = ""

@@ -43,11 +43,18 @@ install-controller-chart: ## Uninstall and reinstall the Helm chart for e2e test
 
 .PHONY: install-k8s-fixtures
 install-k8s-fixtures:
-	@$(KUBECTL) apply -f ./tests/integration/fixtures/ -n $(K8S_TEST_NAMESPACE)
+	@$(KUBECTL) apply -f ./tests/integration/k8s_fixtures/ -n $(K8S_TEST_NAMESPACE)
 
 .PHONY: test-e2e
 test-e2e: setup-test-e2e install-controller-chart install-k8s-fixtures ## Run the e2e tests. Expected an isolated environment using Kind.
-	$(PYTHON) -m pytest $(E2E_TEST_DIR)
+	K8S_NAMESPACE=$(K8S_TEST_NAMESPACE) \
+	$(PYTHON) -m pytest $(TESTS_DIR) --test-mode=integration
+	$(MAKE) cleanup-test-e2e
+
+.PHONY: test-e2e-only
+test-e2e-only: ## Run the e2e tests. Expected an isolated environment using Kind.
+	K8S_NAMESPACE=$(K8S_TEST_NAMESPACE) \
+	$(PYTHON) -m pytest $(TESTS_DIR) --test-mode=integration
 	$(MAKE) cleanup-test-e2e
 
 .PHONY: cleanup-test-e2e

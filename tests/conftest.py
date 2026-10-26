@@ -1,4 +1,4 @@
-def pytest_addoption(parser):
+def pytest_addoption(parser) -> None:
     parser.addoption(
         "--test-mode",
         action="store",
@@ -8,18 +8,18 @@ def pytest_addoption(parser):
     )
 
 
-def pytest_configure(config):
-    mode = config.getoption("--test-mode")
+def pytest_configure(config) -> None:
+    mode: str = config.getoption("--test-mode")
+
+    modules: list = [
+        f"tests.{mode}.fixtures.common",
+        f"tests.{mode}.fixtures.flavour",
+        f"tests.{mode}.fixtures.image",
+        f"tests.{mode}.fixtures.security_group",
+    ]
 
     if mode == "unit":
+        modules.append("tests.unit.fixtures.kubernetes")
 
-        modules = [
-            f"tests.unit.fixtures.common",
-            f"tests.unit.fixtures.kubernetes",
-            f"tests.unit.fixtures.flavour",
-            f"tests.unit.fixtures.image",
-            f"tests.unit.fixtures.security_group",
-        ]
-
-        for module in modules:
-            config.pluginmanager.import_plugin(module)
+    for module in modules:
+        config.pluginmanager.import_plugin(module)

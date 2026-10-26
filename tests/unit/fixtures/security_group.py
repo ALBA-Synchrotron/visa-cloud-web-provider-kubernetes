@@ -1,8 +1,8 @@
 import pytest
 
 
-@pytest.fixture
-def security_groups_list():
+@pytest.fixture(scope="session")
+def security_groups_list() -> list[dict]:
     return [
         {
             "metadata": {"name": "test-sec-group-1"},

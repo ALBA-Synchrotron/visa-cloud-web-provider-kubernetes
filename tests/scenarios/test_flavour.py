@@ -17,13 +17,13 @@ FLAVOUR_ENDPOINTS: list[tuple[str, dict]] = [
     FLAVOUR_ENDPOINTS,
     ids=[e for e, _ in FLAVOUR_ENDPOINTS]
 )
-def test_flavour_endpoints_require_auth(app, client, endpoint, url_kwargs):
+def test_flavour_endpoints_require_auth(app, client, endpoint, url_kwargs) -> None:
     with app.test_request_context():
         response = client.get(current_app.url_for(endpoint, **url_kwargs))
         assert response.status_code == HTTPStatus.UNAUTHORIZED
 
 
-def test_get_all_flavours(app, client, api_key_authentication, flavours_list):
+def test_get_all_flavours(app, client, api_key_authentication, flavours_list) -> None:
     with app.test_request_context():
         r: TestResponse = client.get(url_for(f"{ENDPOINT_NAME_PREFIX}.get_all"),
                                      headers=api_key_authentication)
@@ -40,7 +40,7 @@ def test_get_all_flavours(app, client, api_key_authentication, flavours_list):
         assert len(flavours_list) == len(r_data)
 
 
-def test_get_flavour_by_id(app, client, api_key_authentication, test_flavour):
+def test_get_flavour_by_id(app, client, api_key_authentication, test_flavour) -> None:
     test_flavour_name: str = test_flavour.get("metadata").get("name")
 
     with app.test_request_context():
@@ -58,7 +58,7 @@ def test_get_flavour_by_id(app, client, api_key_authentication, test_flavour):
         assert r_data["id"] == test_flavour_name
 
 
-def test_get_non_existent_flavour_by_id(app, client, api_key_authentication):
+def test_get_non_existent_flavour_by_id(app, client, api_key_authentication) -> None:
     with app.test_request_context():
         r: TestResponse = client.get(url_for(f"{ENDPOINT_NAME_PREFIX}.get_by_name",
                                              id="non-existent-flavour"),
@@ -67,7 +67,7 @@ def test_get_non_existent_flavour_by_id(app, client, api_key_authentication):
         assert r.status_code == HTTPStatus.NOT_FOUND
 
 
-def test_get_flavour_device_allocation_by_id(app, client, api_key_authentication, test_flavour):
+def test_get_flavour_device_allocation_by_id(app, client, api_key_authentication, test_flavour) -> None:
     test_flavour_name: str = test_flavour.get("metadata").get("name")
 
     with app.test_request_context():
@@ -80,7 +80,7 @@ def test_get_flavour_device_allocation_by_id(app, client, api_key_authentication
         assert isinstance(r_data, list)
 
 
-def test_get_non_existent_flavour_device_allocation_by_id(app, client, api_key_authentication):
+def test_get_non_existent_flavour_device_allocation_by_id(app, client, api_key_authentication) -> None:
     with app.test_request_context():
         r: TestResponse = client.get(url_for(f"{ENDPOINT_NAME_PREFIX}.get_device_allocation_by_flavour_name",
                                              id="non-existent-flavour"),

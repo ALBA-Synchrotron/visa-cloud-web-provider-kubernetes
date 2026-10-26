@@ -1,8 +1,8 @@
 import pytest
 
 
-@pytest.fixture
-def flavours_list():
+@pytest.fixture(scope="session")
+def flavours_list() -> list[dict]:
     return [
         {
             "metadata": {"name": "test-flavour-1"},
@@ -20,6 +20,6 @@ def flavours_list():
         },
     ]
 
-@pytest.fixture
-def test_flavour(flavours_list):
+@pytest.fixture(scope="session")
+def test_flavour(flavours_list) -> dict:
     return flavours_list[0]

@@ -17,7 +17,7 @@ HYPERVISOR_ENDPOINTS: list[tuple[str, dict]] = [
     HYPERVISOR_ENDPOINTS,
     ids=[e for e, _ in HYPERVISOR_ENDPOINTS]
 )
-def test_hypervisor_endpoints_require_auth(app, client, endpoint, url_kwargs):
+def test_hypervisor_endpoints_require_auth(app, client, endpoint, url_kwargs) -> None:
     with app.test_request_context():
         response = client.get(current_app.url_for(endpoint, **url_kwargs))
         assert response.status_code == HTTPStatus.UNAUTHORIZED
@@ -30,7 +30,7 @@ def test_hypervisor_endpoints_require_auth(app, client, endpoint, url_kwargs):
     ids=[e for e, _ in HYPERVISOR_ENDPOINTS]
 )
 def test_hypervisor_endpoints_acceptable_response(app, client, endpoint, url_kwargs,
-                                                  api_key_authentication):
+                                                  api_key_authentication) -> None:
     # TODO: Since there is no support for this function in the visa-k8s provider, this tests that the API's response
     #       is acceptable to the VISA API server.
     with app.test_request_context():

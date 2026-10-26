@@ -81,6 +81,7 @@ class KubernetesExtension:
     @classmethod
     def list_visa_cloud_security_groups(cls) -> list:
         try:
+            asd = cls.__list_ns_cluster_custom_object(VISA_CLOUD_SECURITY_GROUPS)
             return cls.__list_ns_cluster_custom_object(VISA_CLOUD_SECURITY_GROUPS)
         except (ApiException, KeyError) as e:
             raise KubernetesError(f"Error listing {VISA_CLOUD_SECURITY_GROUPS}: {e}")

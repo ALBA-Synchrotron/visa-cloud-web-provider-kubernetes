@@ -15,13 +15,13 @@ IMAGE_ENDPOINTS: list[tuple[str, dict]] = [
     IMAGE_ENDPOINTS,
     ids=[e for e, _ in IMAGE_ENDPOINTS]
 )
-def test_security_group_endpoints_require_auth(app, client, endpoint, url_kwargs):
+def test_security_group_endpoints_require_auth(app, client, endpoint, url_kwargs) -> None:
     with app.test_request_context():
         response = client.get(current_app.url_for(endpoint, **url_kwargs))
         assert response.status_code == HTTPStatus.UNAUTHORIZED
 
 
-def test_get_all_security_groups(app, client, api_key_authentication, security_groups_list):
+def test_get_all_security_groups(app, client, api_key_authentication, security_groups_list) -> None:
     with app.test_request_context():
         r: TestResponse = client.get(url_for(f"{ENDPOINT_NAME_PREFIX}.get_all"),
                                      headers=api_key_authentication)

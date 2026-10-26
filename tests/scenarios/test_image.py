@@ -17,13 +17,13 @@ IMAGE_ENDPOINTS: list[tuple[str, dict]] = [
     IMAGE_ENDPOINTS,
     ids=[e for e, _ in IMAGE_ENDPOINTS]
 )
-def test_image_endpoints_require_auth(app, client, endpoint, url_kwargs):
+def test_image_endpoints_require_auth(app, client, endpoint, url_kwargs) -> None:
     with app.test_request_context():
         response = client.get(current_app.url_for(endpoint, **url_kwargs))
         assert response.status_code == HTTPStatus.UNAUTHORIZED
 
 
-def test_get_all_images(app, client, api_key_authentication, images_list):
+def test_get_all_images(app, client, api_key_authentication, images_list) -> None:
     with app.test_request_context():
         r: TestResponse = client.get(url_for(f"{ENDPOINT_NAME_PREFIX}.get_all"),
                                      headers=api_key_authentication)
@@ -40,7 +40,7 @@ def test_get_all_images(app, client, api_key_authentication, images_list):
         assert len(r_data) == len(images_list)
 
 
-def test_get_image_by_id(app, client, api_key_authentication, test_image):
+def test_get_image_by_id(app, client, api_key_authentication, test_image) -> None:
     test_image_name: str = test_image.get("metadata").get("name")
 
     with app.test_request_context():
@@ -58,7 +58,7 @@ def test_get_image_by_id(app, client, api_key_authentication, test_image):
         assert r_data["id"] == test_image_name
 
 
-def test_get_non_existent_image_by_id(app, client, api_key_authentication):
+def test_get_non_existent_image_by_id(app, client, api_key_authentication) -> None:
     with app.test_request_context():
         r: TestResponse = client.get(url_for(f"{ENDPOINT_NAME_PREFIX}.get_by_name",
                                              id="non-existent-image"),

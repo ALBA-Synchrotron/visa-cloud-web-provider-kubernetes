@@ -5,8 +5,8 @@ from app.extensions.kubernetes import KubernetesExtension
 from app.labels.common import INIT_K8S, ERR_K8S_CONF_LOAD, ERR_K8S_CRD_NOT_FOUND
 from app.utils.exceptions import APIConfigError, VISAK8sInstallError
 
-VISA_K8S_CRD_LIST: list = ['visacloudsecuritygroups', 'visacloudimages', 'visainstances', 'visainstances/status',
-                           'visacloudflavours', 'visaclouddevices', 'visasidecarconfigs']
+VISA_K8S_CRD_LIST: list = ['visacloudsecuritygroups', 'visacloudimages', 'visacloudinstances', 'visacloudinstances/status',
+                           'visacloudflavours', 'visaclouddevices', 'visacloudsidecarconfigs']
 
 
 def load_kubernetes_config(app: Flask) -> None:
@@ -42,7 +42,7 @@ def initialize_kubernetes(app: Flask) -> None:
     with app.app_context():
         app.extensions["kubernetes"] = KubernetesExtension()
 
-        if not app.config["TESTING"] and app.config["TEST_MODE"] != "unit":
+        if app.config["TEST_MODE"] != "unit":
             load_kubernetes_config(app)
 
         validate_visa_kubernetes_crd_are_available(app)
