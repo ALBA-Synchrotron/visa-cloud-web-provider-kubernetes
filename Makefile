@@ -9,7 +9,10 @@ HELM_REPO_URL ?= https://alba-synchrotron.github.io/visa-k8s-controller-helm
 HELM_CHART ?= alba-synchrotron/visa-k8s-controller
 K8S_TEST_NAMESPACE ?= visa-k8s-test-e2e
 
-.PHONY: setup-test-e2e
+.PHONY: test
+test:
+	$(MAKE) test-unit
+	$(MAKE) test-e2e
 
 .PHONY: setup-test-e2e
 setup-test-e2e: ## Set up a Kind cluster for e2e tests if it does not exist.

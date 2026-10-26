@@ -9,7 +9,9 @@ from app.extensions.kubernetes import KubernetesExtension
 
 
 @pytest.fixture(scope="session")
-def dummy_kubernetes_extension(monkeypatch, flavours_list, images_list, security_groups_list) -> object:
+def dummy_kubernetes_extension(flavours_list, images_list, security_groups_list) -> object:
+    patcher = pytest.MonkeyPatch()
+
     class DummyKubernetesExtension:
         @classmethod
         def get_visa_k8s_cloud_api_resources(cls, __: Flask | None = None) -> list:
@@ -41,20 +43,18 @@ def dummy_kubernetes_extension(monkeypatch, flavours_list, images_list, security
         def list_visa_cloud_security_groups(cls) -> list:
             return security_groups_list
 
+    try:
+        for name, method in DummyKubernetesExtension.__dict__.items():
+            if name.startswith("_"):
+                continue
 
-    for name, method in DummyKubernetesExtension.__dict__.items():
-        if name.startswith("_"):
-            continue
+            if isinstance(method, classmethod):
+                method = getattr(DummyKubernetesExtension, name)
+            elif not callable(method):
+                continue
 
-        if isinstance(method, classmethod):
-            method = getattr(DummyKubernetesExtension, name)
-        elif not callable(method):
-            continue
+            patcher.setattr(KubernetesExtension, name, method)
 
-        monkeypatch.setattr(KubernetesExtension, name, method)
-
-
-    return DummyKubernetesExtension
-
-
-
+        yield DummyKubernetesExtension
+    finally:
+        patcher.undo()
