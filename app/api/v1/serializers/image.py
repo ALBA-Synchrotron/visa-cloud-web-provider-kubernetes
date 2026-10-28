@@ -1,6 +1,6 @@
 import orjson
 
-from utils.helpers import convert_memory
+from app.utils.helpers import convert_memory
 
 
 def image_to_dict(f) -> dict:

@@ -6,9 +6,9 @@ from flask import Flask, current_app
 from app.utils.exceptions import KubernetesNotFoundError, CloudProviderResourceQuotaExceeded
 from app.utils.kubernetes import VISA_K8S_CRD_LIST
 from app.extensions.kubernetes import KubernetesExtension
-from utils.helpers import convert_memory
-from v1.serializers.flavour import flavours_to_json
-from v1.serializers.instance import get_k8s_instance_body_from_payload
+from app.utils.helpers import convert_memory
+from app.api.v1.serializers.flavour import flavours_to_json
+from app.api.v1.serializers.instance import get_k8s_instance_body_from_payload
 
 
 @pytest.fixture(scope="session")

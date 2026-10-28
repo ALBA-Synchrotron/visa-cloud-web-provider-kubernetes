@@ -5,7 +5,7 @@ from flask import Blueprint, current_app, Response, request
 
 from app.api.v1.serializers.instance import instance_to_json, validate_security_group_name_payload, \
     validate_instance_payload
-from labels.common import MSG_START_INSTANCE, MSG_STOP_INSTANCE, MSG_REBOOT_INSTANCE, MSG_SEC_GROUP_ADDED, \
+from app.labels.common import MSG_START_INSTANCE, MSG_STOP_INSTANCE, MSG_REBOOT_INSTANCE, MSG_SEC_GROUP_ADDED, \
     MSG_SEC_GROUP_REMOVED, MSG_INSTANCE_DELETED
 
 bp: Blueprint = Blueprint("instance", __name__)

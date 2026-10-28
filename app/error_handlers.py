@@ -3,7 +3,7 @@ from http import HTTPStatus
 from flask import jsonify, current_app, Flask
 from flask.typing import ResponseReturnValue
 
-from .labels.common import NOT_FOUND_SFX, NOT_FOUND_IN_SFX, INVALID_PAYLOAD, CP_CREATION_QUOTA_EXCEEDED
+from app.labels.common import NOT_FOUND_SFX, NOT_FOUND_IN_SFX, INVALID_PAYLOAD, CP_CREATION_QUOTA_EXCEEDED
 from app.utils.exceptions import KubernetesError, KubernetesNotFoundError, KubernetesNotFoundInInstanceError, \
     InvalidPayloadFormat, CloudProviderResourceQuotaExceeded
 

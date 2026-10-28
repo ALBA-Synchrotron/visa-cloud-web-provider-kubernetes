@@ -8,10 +8,10 @@ from app.labels.kubernetes import K8S_VISA_API_GROUP, K8S_VISA_API_VERSION, VISA
     VISA_CLOUD_INSTANCE, VISA_CLOUD_IMAGE, VISA_CLOUD_SECURITY_GROUP
 from app.utils.exceptions import KubernetesError, KubernetesNotFoundError, KubernetesNotFoundInInstanceError, \
     CloudProviderResourceQuotaExceeded
-from labels.common import ERR_FETCHING_K8S_CRDS, ERR_LISTING_PFX, ERR_STARTING_PFX, ERR_STOPPING_PFX, ERR_CREATING_PFX
-from utils.helpers import convert_memory
-from v1.serializers.flavour import flavours_to_json
-from v1.serializers.instance import get_k8s_instance_body_from_payload
+from app.labels.common import ERR_FETCHING_K8S_CRDS, ERR_LISTING_PFX, ERR_STARTING_PFX, ERR_STOPPING_PFX, ERR_CREATING_PFX
+from app.utils.helpers import convert_memory
+from app.api.v1.serializers.flavour import flavours_to_json
+from app.api.v1.serializers.instance import get_k8s_instance_body_from_payload
 
 
 class KubernetesExtension:

@@ -2,7 +2,7 @@ from http import HTTPStatus
 
 from flask import Blueprint, current_app, Response
 
-from v1.serializers.metrics import metrics_to_json
+from app.api.v1.serializers.metrics import metrics_to_json
 
 bp: Blueprint = Blueprint("metrics", __name__)
 

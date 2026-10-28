@@ -2,7 +2,7 @@ import orjson
 from flask import current_app
 
 from app.utils.exceptions import InvalidPayloadFormat
-from labels.kubernetes import CLOUD_PROVIDER_PREFIX
+from app.labels.kubernetes import CLOUD_PROVIDER_PREFIX
 
 
 def instance_to_dict(f, only_address: bool = False, only_id: bool = False,
