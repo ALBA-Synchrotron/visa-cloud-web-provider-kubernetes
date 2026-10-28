@@ -11,6 +11,14 @@ class BaseConfig:
     TEST_MODE: str = ""
     HOST: str = os.getenv("API_HOST", "0.0.0.0")
     PORT: int = int(os.getenv("API_PORT", "5000"))
+    AUTO_START_INSTANCES_ON_CREATION: bool = bool(os.getenv(
+        "AUTO_START_INSTANCES_ON_CREATION", True
+    ))
+    MAX_RAM_ALLOCATED: float = float(os.environ.get("MAX_RAM_ALLOCATED", 51200))
+    MAX_INSTANCES_ALLOCATED: int = int(os.environ.get("MAX_INSTANCES_ALLOCATED", 20))
+    MAX_CORES_ALLOCATED: float = float(os.environ.get("MAX_CORES_ALLOCATED", 15))
+    IGNORE_SEC_GROUP_NOT_FOUND_ERRORS: bool = bool(os.environ.get("IGNORE_SEC_GROUP_NOT_FOUND_ERRORS", True))
+    ENFORCE_MAX_QUOTAS: bool = bool(os.environ.get("ENFORCE_MAX_QUOTAS", True))
 
 
 class DevConfig(BaseConfig):

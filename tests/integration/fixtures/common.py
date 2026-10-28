@@ -24,12 +24,12 @@ def app() -> Generator[Flask, Any, None]:
         yield app
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture
 def client(app) -> FlaskClient:
     return app.test_client()
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture
 def api_key_authentication(app) -> dict:
     header_name: str = app.config["AUTH_API_KEY_HEADER_NAME"]
     api_key: str = app.config["AUTH_API_KEY"]

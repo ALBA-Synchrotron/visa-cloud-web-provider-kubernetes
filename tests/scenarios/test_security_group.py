@@ -1,23 +1,24 @@
-from http import HTTPStatus
+from http import HTTPStatus, HTTPMethod
 
 import pytest
 from flask import current_app, url_for
 from werkzeug.test import TestResponse
 
 ENDPOINT_NAME_PREFIX: str = "v1.security_group"
-SECURITY_GROUPS_ENDPOINTS: list[tuple[str, dict]] = [
-    (f"{ENDPOINT_NAME_PREFIX}.get_all", {}),
+SECURITY_GROUPS_ENDPOINTS: list[tuple[str, dict, str]] = [
+    (f"{ENDPOINT_NAME_PREFIX}.get_all", {}, HTTPMethod.GET),
 ]
 
 
 @pytest.mark.parametrize(
-    "endpoint, url_kwargs",
+    "endpoint, url_kwargs, allowed_method",
     SECURITY_GROUPS_ENDPOINTS,
-    ids=[e for e, _ in SECURITY_GROUPS_ENDPOINTS]
+    ids=[e for e, _, _ in SECURITY_GROUPS_ENDPOINTS]
 )
-def test_security_group_endpoints_require_auth(app, client, endpoint, url_kwargs) -> None:
+def test_security_group_endpoints_require_auth(app, client, endpoint, url_kwargs, allowed_method) -> None:
     with app.test_request_context():
-        response = client.get(current_app.url_for(endpoint, **url_kwargs))
+        url = current_app.url_for(endpoint, **url_kwargs)
+        response = client.open(url, method=allowed_method)
         assert response.status_code == HTTPStatus.UNAUTHORIZED
 
 

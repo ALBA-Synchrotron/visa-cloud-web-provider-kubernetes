@@ -17,6 +17,7 @@ def pytest_configure(config) -> None:
         f"tests.{mode}.fixtures.image",
         f"tests.{mode}.fixtures.security_group",
         f"tests.{mode}.fixtures.device",
+        f"tests.{mode}.fixtures.instance",
     ]
 
     if mode == "unit":

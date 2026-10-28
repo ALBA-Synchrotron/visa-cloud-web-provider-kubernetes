@@ -1,5 +1,7 @@
 import orjson
 
+from app.utils.helpers import convert_memory, to_cores
+
 
 def flavour_to_dict(f) -> dict:
     metadata: dict = f.get("metadata")
@@ -9,13 +11,13 @@ def flavour_to_dict(f) -> dict:
     return {
         "id": metadata.get("name"),
         "name": metadata.get("name"),
-        "cpus": limits.get("cpu"),
-        "disk": spec.get("diskSize"),
-        "ram": limits.get("memory"),
+        "cpus": max(to_cores(limits.get("cpu")), 1),
+        "disk": convert_memory(spec.get("diskSize")),
+        "ram": convert_memory(limits.get("memory")),
     }
 
 
-def flavours_to_json(flavours) -> bytes:
+def flavours_to_json(flavours, dump: bool = True) -> bytes | dict | list:
     if isinstance(flavours, dict):
-        return orjson.dumps(flavour_to_dict(flavours))
-    return orjson.dumps([flavour_to_dict(f) for f in flavours])
+        return orjson.dumps(flavour_to_dict(flavours)) if dump else flavour_to_dict(flavours)
+    return orjson.dumps([flavour_to_dict(f) for f in flavours]) if dump else [flavour_to_dict(f) for f in flavours]

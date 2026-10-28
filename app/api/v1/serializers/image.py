@@ -1,5 +1,7 @@
 import orjson
 
+from utils.helpers import convert_memory
+
 
 def image_to_dict(f) -> dict:
     metadata: dict = f.get("metadata")
@@ -8,7 +10,7 @@ def image_to_dict(f) -> dict:
     return {
         "id": metadata.get("name"),
         "name": metadata.get("name"),
-        "size": spec.get("size"),
+        "size": convert_memory(spec.get("size") or 1),
         "createdAt": metadata.get("creationTimestamp"),
     }
 
