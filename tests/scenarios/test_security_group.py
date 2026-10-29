@@ -30,10 +30,9 @@ def test_get_all_security_groups(app, client, api_key_authentication, security_g
 
         assert r.status_code == HTTPStatus.OK
         assert isinstance(r_data, list)
-        for i in r_data:
-            assert isinstance(i, dict)
-            assert all(
-                key in i.keys()
-                for key in ["name"]
-            )
+        assert all(
+            isinstance(i, str)
+            for i in r_data
+        )
+
         assert len(r_data) == len(security_groups_list)
