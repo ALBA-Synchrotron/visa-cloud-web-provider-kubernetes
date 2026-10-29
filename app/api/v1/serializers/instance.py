@@ -102,9 +102,10 @@ def get_k8s_instance_body_from_payload(payload: dict) -> dict:
         "apiVersion": f"{CLOUD_PROVIDER_PREFIX}/v1",
         "kind": "VISACloudInstance",
         "metadata": {
-            "name": payload.get("name"),
+            "name": str(metadata.get("id")),
             "namespace": current_app.config["K8S_NAMESPACE"],
             "labels": {
+                f"{CLOUD_PROVIDER_PREFIX}/visa-name": payload.get("name"),
                 f"{CLOUD_PROVIDER_PREFIX}/id": metadata.get("id"),
                 f"{CLOUD_PROVIDER_PREFIX}/uid": metadata.get("uid"),
             },
