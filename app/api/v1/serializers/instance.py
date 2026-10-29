@@ -6,10 +6,10 @@ from app.labels.kubernetes import CLOUD_PROVIDER_PREFIX
 
 
 def instance_to_dict(f, only_address: bool = False, only_id: bool = False,
-                     only_sec_groups: bool = False) -> dict | list:
+                     only_sec_groups: bool = False, creation_request: bool = False) -> dict | list:
     metadata: dict = f.get("metadata")
     spec: dict = f.get("spec")
-    status: dict = f.get("status", {})
+    status: dict = f.get("status", {}) if creation_request else {"state": "BUILDING"}
     fault: dict = status.get("error", {})
 
     if only_address:
@@ -40,12 +40,14 @@ def instance_to_dict(f, only_address: bool = False, only_id: bool = False,
 
 
 def instance_to_json(instances, only_address: bool = False, only_id: bool = False,
-                     only_sec_groups: bool = False) -> bytes:
+                     only_sec_groups: bool = False, creation_request: bool = False) -> bytes:
     if isinstance(instances, dict):
         return orjson.dumps(
-            instance_to_dict(instances, only_address=only_address, only_id=only_id, only_sec_groups=only_sec_groups))
+            instance_to_dict(instances, only_address=only_address, only_id=only_id, only_sec_groups=only_sec_groups,
+                             creation_request=creation_request))
     return orjson.dumps(
-        [instance_to_dict(f, only_address=only_address, only_id=only_id, only_sec_groups=only_sec_groups) for f in
+        [instance_to_dict(f, only_address=only_address, only_id=only_id, only_sec_groups=only_sec_groups,
+                          creation_request=creation_request) for f in
          instances])
 
 

@@ -123,6 +123,6 @@ def create_instance() -> Response:
     validate_instance_payload(body)
 
     k8s_instance: object = k8s.create_visa_cloud_instance(body)
-    return Response(instance_to_json(k8s_instance),
+    return Response(instance_to_json(k8s_instance, creation_request=True),
                     status=HTTPStatus.CREATED,
                     mimetype="application/json")
