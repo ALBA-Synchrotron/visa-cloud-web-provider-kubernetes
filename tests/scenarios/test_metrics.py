@@ -22,7 +22,7 @@ def test_metrics_endpoints_require_auth(app, client, endpoint, url_kwargs, allow
         assert response.status_code == HTTPStatus.UNAUTHORIZED
 
 
-def test_get_all_metrics(app, client, api_key_authentication, instances_list) -> None:
+def test_get_all_metrics(app, client, api_key_authentication, instances_list, reset_instances) -> None:
     with app.test_request_context():
         r: TestResponse = client.get(url_for(f"{ENDPOINT_NAME_PREFIX}.get_all"),
                                      headers=api_key_authentication)

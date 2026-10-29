@@ -134,3 +134,7 @@ def instances_list() -> list[dict]:
 @pytest.fixture
 def test_instance(dummy_kubernetes_extension) -> dict:
     return dummy_kubernetes_extension.instances_list[0]
+
+@pytest.fixture
+def reset_instances(app, instances_list) -> None:
+    return

@@ -24,6 +24,9 @@ ERR_LISTING_PFX: str = "Error listing"
 ERR_STARTING_PFX: str = "Error starting"
 ERR_STOPPING_PFX: str = "Error stopping"
 ERR_CREATING_PFX: str = "Error creating"
+ERR_UPDATING_PFX: str = "Error updating"
+ERR_DELETING_PFX: str = "Error deleting"
+ERR_RESTARTING_PFX: str = "Error restarting"
 
 # Instances actions
 MSG_START_INSTANCE: str = "Starting instance"

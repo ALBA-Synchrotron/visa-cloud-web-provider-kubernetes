@@ -4,7 +4,7 @@ metadata:
   labels:
     app.kubernetes.io/name: visa-k8s-controller
     app.kubernetes.io/managed-by: kustomize
-  name: all-aux-services
+  name: test-flavour-1
 spec:
   sidecars:
     - name: sidecar-guacd
@@ -19,7 +19,7 @@ metadata:
   labels:
     app.kubernetes.io/name: visa-k8s-controller
     app.kubernetes.io/managed-by: kustomize
-  name: all-aux-services-big
+  name: test-flavour-2
 spec:
   sidecars:
     - name: sidecar-guacd

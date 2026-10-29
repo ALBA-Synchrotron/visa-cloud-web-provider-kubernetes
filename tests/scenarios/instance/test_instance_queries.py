@@ -6,7 +6,7 @@ from werkzeug.test import TestResponse
 ENDPOINT_NAME_PREFIX: str = "v1.instance"
 
 
-def test_get_all_instances(app, client, api_key_authentication, instances_list) -> None:
+def test_get_all_instances(app, client, api_key_authentication, instances_list, reset_instances) -> None:
     with app.test_request_context():
         r: TestResponse = client.get(url_for(f"{ENDPOINT_NAME_PREFIX}.get_all"),
                                      headers=api_key_authentication)
@@ -29,7 +29,7 @@ def test_get_all_instances(app, client, api_key_authentication, instances_list) 
         assert len(instances_list) == len(r_data)
 
 
-def test_get_instance_by_id(app, client, api_key_authentication, test_instance) -> None:
+def test_get_instance_by_id(app, client, api_key_authentication, test_instance, reset_instances) -> None:
     test_instance_name: str = test_instance.get("metadata").get("name")
 
     with app.test_request_context():
@@ -65,7 +65,7 @@ def test_get_non_existent_instance_by_id(app, client, api_key_authentication) ->
         assert isinstance(r_data, dict)
 
 
-def test_get_instance_ip_by_id(app, client, api_key_authentication, test_instance) -> None:
+def test_get_instance_ip_by_id(app, client, api_key_authentication, test_instance, reset_instances) -> None:
     test_instance_name: str = test_instance.get("metadata").get("name")
 
     with app.test_request_context():
@@ -97,7 +97,7 @@ def test_get_non_existent_instance_ip_by_id(app, client, api_key_authentication)
         assert isinstance(r_data, dict)
 
 
-def test_get_all_instance_identifiers(app, client, api_key_authentication, instances_list) -> None:
+def test_get_all_instance_identifiers(app, client, api_key_authentication, instances_list, reset_instances) -> None:
     with app.test_request_context():
         r: TestResponse = client.get(url_for(f"{ENDPOINT_NAME_PREFIX}.get_all_identifiers"),
                                      headers=api_key_authentication)

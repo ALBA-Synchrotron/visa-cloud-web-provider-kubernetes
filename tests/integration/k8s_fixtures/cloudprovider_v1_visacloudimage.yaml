@@ -4,7 +4,7 @@ metadata:
   labels:
     app.kubernetes.io/name: visa-k8s-controller
     app.kubernetes.io/managed-by: kustomize
-  name: debian12-test-image
+  name: test-image-1
 spec:
   containerSpec:
     fullImageReference: "registry.cells.es/visa-images/its-alba-test:latest"

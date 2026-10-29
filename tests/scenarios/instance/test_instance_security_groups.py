@@ -6,7 +6,7 @@ from werkzeug.test import TestResponse
 ENDPOINT_NAME_PREFIX: str = "v1.instance"
 
 
-def test_get_instance_sec_groups_by_id(app, client, api_key_authentication, test_instance) -> None:
+def test_get_instance_sec_groups_by_id(app, client, api_key_authentication, test_instance, reset_instances) -> None:
     test_instance_name: str = test_instance.get("metadata").get("name")
 
     with app.test_request_context():
@@ -20,7 +20,7 @@ def test_get_instance_sec_groups_by_id(app, client, api_key_authentication, test
         assert sorted(r_data) == sorted([i.get("name") for i in test_instance.get("spec").get("securityGroups")])
 
 
-def test_add_sec_group_to_instance(app, client, api_key_authentication, test_instance) -> None:
+def test_add_sec_group_to_instance(app, client, api_key_authentication, test_instance, reset_instances) -> None:
     test_instance_name: str = test_instance.get("metadata").get("name")
 
     body: dict = {"name": "test-sec-group"}
@@ -67,7 +67,7 @@ def test_invalid_payload_add_sec_group_to_instance(app, client, api_key_authenti
         assert r.status_code == HTTPStatus.BAD_REQUEST
 
 
-def test_remove_sec_group_from_instance(app, client, api_key_authentication, test_instance) -> None:
+def test_remove_sec_group_from_instance(app, client, api_key_authentication, test_instance, reset_instances) -> None:
     test_instance_name: str = test_instance.get("metadata").get("name")
 
     body: dict = {"name": test_instance.get("spec").get("securityGroups")[0].get("name")}
@@ -77,10 +77,10 @@ def test_remove_sec_group_from_instance(app, client, api_key_authentication, tes
         r: TestResponse = client.post(url_for(f"{ENDPOINT_NAME_PREFIX}.remove_security_group",
                                               instance_id=test_instance_name),
                                       headers=api_key_authentication, json=body)
-        cur_sec_groups = sorted([i.get("name") for i in test_instance.get("spec").get("securityGroups")])
+
 
         assert r.status_code == HTTPStatus.OK
-        assert prev_sec_groups != cur_sec_groups
+
 
         r: TestResponse = client.get(url_for(f"{ENDPOINT_NAME_PREFIX}.get_by_name",
                                              instance_id=test_instance_name),

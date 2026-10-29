@@ -6,7 +6,7 @@ from flask import Flask, current_app
 from app.utils.exceptions import KubernetesNotFoundError, CloudProviderResourceQuotaExceeded
 from app.utils.kubernetes import VISA_K8S_CRD_LIST
 from app.extensions.kubernetes import KubernetesExtension
-from app.utils.helpers import convert_memory
+from app.utils.helpers import convert_memory, to_cores
 from app.api.v1.serializers.flavour import flavours_to_json
 from app.api.v1.serializers.instance import get_k8s_instance_body_from_payload
 
@@ -134,7 +134,7 @@ def dummy_kubernetes_extension(flavours_list, images_list, security_groups_list,
             current_metrics: dict = cls.get_total_visa_cloud_instances_metrics()
 
             flavour_spec_limits: dict = flavour.get("spec").get("limits")
-            req_cpus: float = max(int(convert_memory(flavour_spec_limits.get("cpu"))), 1) + current_metrics[
+            req_cpus: float = max(int(to_cores(flavour_spec_limits.get("cpu"))), 1) + current_metrics[
                 "in_use_cpus"]
             req_ram: float = max(int(convert_memory(flavour_spec_limits.get("memory"))), 1) + current_metrics[
                 "in_use_ram"]

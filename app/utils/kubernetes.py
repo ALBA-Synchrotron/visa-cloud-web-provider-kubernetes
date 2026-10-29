@@ -1,4 +1,4 @@
-import re
+import time
 
 from flask import Flask
 from kubernetes import config as k8s_config
@@ -49,3 +49,22 @@ def initialize_kubernetes(app: Flask) -> None:
             load_kubernetes_config(app)
 
         validate_visa_kubernetes_crd_are_available(app)
+
+
+def wait_until_empty(api: object, group: str, version: str, namespace: str, plural: str, timeout: int = 45) -> None:
+    deadline = time.monotonic() + timeout
+
+    while time.monotonic() < deadline:
+        result = api.list_namespaced_custom_object(
+            group=group,
+            version=version,
+            namespace=namespace,
+            plural=plural,
+        )
+
+        if not result.get("items"):
+            return
+
+        time.sleep(0.5)
+
+    raise TimeoutError(f"{plural} were not deleted within {timeout}s")
