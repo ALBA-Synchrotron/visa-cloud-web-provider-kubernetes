@@ -1,0 +1,68 @@
+apiVersion: cloudprovider.visa.k8s/v1
+kind: VISACloudInstance
+metadata:
+  annotations:
+    cloudprovider.visa.k8s/bootCommand: ""
+    cloudprovider.visa.k8s/instruments: BL13 - XALOC,BL06 - XAIRA,BL31 - FAXTOR,BL11
+      - NCD-SWEET
+    cloudprovider.visa.k8s/keyboardLayout: es-es-qwerty
+    cloudprovider.visa.k8s/owner: rcabezas
+    cloudprovider.visa.k8s/pamPublicKey: |
+      -----BEGIN PUBLIC KEY-----
+      42
+      -----END PUBLIC KEY-----
+    cloudprovider.visa.k8s/proposals: 2023097843,2025003333,20250370148,20250370148,2024098712,20250370148,2025003333
+    cloudprovider.visa.k8s/screenHeight: "1080"
+    cloudprovider.visa.k8s/screenWidth: "1920"
+  labels:
+    cloudprovider.visa.k8s/id: "897"
+    cloudprovider.visa.k8s/uid: etMe0MjE
+  name: rcq-897
+spec:
+  associatedProposals:
+    - "2023097843"
+    - "2025003333"
+    - "20250370148"
+    - "20250370148"
+    - "2024098712"
+    - "20250370148"
+    - "2025003333"
+  desiredState: ACTIVE
+  flavour:
+    name: test-flavour-1
+  image:
+    name: test-image-1
+  securityGroups:
+    - name: instance-admin
+    - name: instance-sudoers
+---
+apiVersion: cloudprovider.visa.k8s/v1
+kind: VISACloudInstance
+metadata:
+  annotations:
+    cloudprovider.visa.k8s/bootCommand: ""
+    cloudprovider.visa.k8s/instruments: ""
+    cloudprovider.visa.k8s/keyboardLayout: es-es-qwerty
+    cloudprovider.visa.k8s/owner: rcabezas
+    cloudprovider.visa.k8s/pamPublicKey: |
+      -----BEGIN PUBLIC KEY-----
+      42
+      -----END PUBLIC KEY-----
+    cloudprovider.visa.k8s/proposals: ""
+    cloudprovider.visa.k8s/screenHeight: "1080"
+    cloudprovider.visa.k8s/screenWidth: "1920"
+  labels:
+    cloudprovider.visa.k8s/id: "895"
+    cloudprovider.visa.k8s/uid: XHmd8T0y
+  name: rcq-895
+spec:
+  associatedProposals:
+    - ""
+  desiredState: ACTIVE
+  flavour:
+    name: test-flavour-1
+  image:
+    name: test-image-1
+  securityGroups:
+    - name: instance-admin
+

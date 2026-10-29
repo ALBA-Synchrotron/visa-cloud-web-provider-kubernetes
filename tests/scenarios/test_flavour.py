@@ -1,0 +1,90 @@
+from http import HTTPStatus, HTTPMethod
+
+import pytest
+from flask import current_app, url_for
+from werkzeug.test import TestResponse
+
+ENDPOINT_NAME_PREFIX: str = "v1.flavour"
+FLAVOUR_ENDPOINTS: list[tuple[str, dict, str]] = [
+    (f"{ENDPOINT_NAME_PREFIX}.get_all", {}, HTTPMethod.GET),
+    (f"{ENDPOINT_NAME_PREFIX}.get_by_name", {"id": "1"}, HTTPMethod.GET),
+    (f"{ENDPOINT_NAME_PREFIX}.get_device_allocation_by_flavour_name", {"id": "1"}, HTTPMethod.GET),
+]
+
+
+@pytest.mark.parametrize(
+    "endpoint, url_kwargs, allowed_method",
+    FLAVOUR_ENDPOINTS,
+    ids=[e for e, _, _ in FLAVOUR_ENDPOINTS]
+)
+def test_flavour_endpoints_require_auth(app, client, endpoint, url_kwargs, allowed_method) -> None:
+    with app.test_request_context():
+        url = current_app.url_for(endpoint, **url_kwargs)
+        response = client.open(url, method=allowed_method)
+        assert response.status_code == HTTPStatus.UNAUTHORIZED
+
+
+def test_get_all_flavours(app, client, api_key_authentication, flavours_list) -> None:
+    with app.test_request_context():
+        r: TestResponse = client.get(url_for(f"{ENDPOINT_NAME_PREFIX}.get_all"),
+                                     headers=api_key_authentication)
+        r_data: list = r.get_json()
+
+        assert r.status_code == HTTPStatus.OK
+        assert isinstance(r_data, list)
+        for i in r_data:
+            assert isinstance(i, dict)
+            assert all(
+                key in i.keys()
+                for key in ["id", "name", "cpus", "disk", "ram"]
+            )
+        assert len(flavours_list) == len(r_data)
+
+
+def test_get_flavour_by_id(app, client, api_key_authentication, test_flavour) -> None:
+    test_flavour_name: str = test_flavour.get("metadata").get("name")
+
+    with app.test_request_context():
+        r: TestResponse = client.get(url_for(f"{ENDPOINT_NAME_PREFIX}.get_by_name",
+                                             id=test_flavour_name),
+                                     headers=api_key_authentication)
+        r_data: list = r.get_json()
+
+        assert r.status_code == HTTPStatus.OK
+        assert isinstance(r_data, dict)
+        assert all(
+            key in r_data.keys()
+            for key in ["id", "name", "cpus", "disk", "ram"]
+        )
+        assert r_data["id"] == test_flavour_name
+
+
+def test_get_non_existent_flavour_by_id(app, client, api_key_authentication) -> None:
+    with app.test_request_context():
+        r: TestResponse = client.get(url_for(f"{ENDPOINT_NAME_PREFIX}.get_by_name",
+                                             id="non-existent-flavour"),
+                                     headers=api_key_authentication)
+
+        assert r.status_code == HTTPStatus.NOT_FOUND
+
+
+def test_get_flavour_device_allocation_by_id(app, client, api_key_authentication, test_flavour) -> None:
+    test_flavour_name: str = test_flavour.get("metadata").get("name")
+
+    with app.test_request_context():
+        r: TestResponse = client.get(url_for(f"{ENDPOINT_NAME_PREFIX}.get_device_allocation_by_flavour_name",
+                                             id=test_flavour_name),
+                                     headers=api_key_authentication)
+        r_data: list = r.get_json()
+
+        assert r.status_code == HTTPStatus.OK
+        assert isinstance(r_data, list)
+
+
+def test_get_non_existent_flavour_device_allocation_by_id(app, client, api_key_authentication) -> None:
+    with app.test_request_context():
+        r: TestResponse = client.get(url_for(f"{ENDPOINT_NAME_PREFIX}.get_device_allocation_by_flavour_name",
+                                             id="non-existent-flavour"),
+                                     headers=api_key_authentication)
+
+        assert r.status_code == HTTPStatus.NOT_FOUND
