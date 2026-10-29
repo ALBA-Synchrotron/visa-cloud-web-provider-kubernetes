@@ -6,14 +6,11 @@ from app.labels.kubernetes import CLOUD_PROVIDER_PREFIX
 
 
 def instance_to_dict(f, only_address: bool = False, only_id: bool = False,
-                     only_sec_groups: bool = False, creation_request: bool = False) -> dict | list:
+                     only_sec_groups: bool = False) -> dict | list:
     metadata: dict = f.get("metadata")
     spec: dict = f.get("spec")
     status: dict = f.get("status", {})
     fault: dict = status.get("error", {})
-
-    if not status and creation_request:
-        status = {"state": "BUILDING"}
 
     if only_address:
         return {"address": metadata.get("address", ""), "id": metadata.get("name")}
@@ -26,8 +23,8 @@ def instance_to_dict(f, only_address: bool = False, only_id: bool = False,
 
     return {
         "id": metadata.get("name"),
-        "name": metadata.get("name"),
-        "state": status.get("state"),
+        "name": metadata.get("labels").get(f"{CLOUD_PROVIDER_PREFIX}/visa-name"),
+        "state": status.get("state", "STARTING"),
         "flavourId": spec.get("flavour").get("name"),
         "imageId": spec.get("image").get("name"),
         "createdAt": metadata.get("creationTimestamp"),
@@ -46,11 +43,9 @@ def instance_to_json(instances, only_address: bool = False, only_id: bool = Fals
                      only_sec_groups: bool = False, creation_request: bool = False) -> bytes:
     if isinstance(instances, dict):
         return orjson.dumps(
-            instance_to_dict(instances, only_address=only_address, only_id=only_id, only_sec_groups=only_sec_groups,
-                             creation_request=creation_request))
+            instance_to_dict(instances, only_address=only_address, only_id=only_id, only_sec_groups=only_sec_groups))
     return orjson.dumps(
-        [instance_to_dict(f, only_address=only_address, only_id=only_id, only_sec_groups=only_sec_groups,
-                          creation_request=creation_request) for f in
+        [instance_to_dict(f, only_address=only_address, only_id=only_id, only_sec_groups=only_sec_groups) for f in
          instances])
 
 
