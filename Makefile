@@ -12,7 +12,7 @@ KIND_CLUSTER       ?= visa-k8s-test-e2e
 K8S_TEST_NAMESPACE ?= visa-k8s-test-e2e
 
 HELM_REPO_NAME ?= alba-synchrotron
-HELM_REPO_URL  ?= https://alba-synchrotron.github.io/visa-k8s-controller-helm
+HELM_REPO_URL  ?= https://alba-synchrotron.github.io/visa-k8s-helm
 HELM_CHART     ?= alba-synchrotron/visa-k8s-controller
 HELM_RELEASE   ?= visa-k8s-controller
 
