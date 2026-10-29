@@ -1,0 +1,20 @@
+apiVersion: cloudprovider.visa.k8s/v1
+kind: VISACloudSecurityGroup
+metadata:
+  labels:
+    app.kubernetes.io/name: visa-k8s-controller
+  name: instance-sudoers
+---
+apiVersion: cloudprovider.visa.k8s/v1
+kind: VISACloudSecurityGroup
+metadata:
+  labels:
+    app.kubernetes.io/name: visa-k8s-controller
+  name: instance-admin
+---
+apiVersion: cloudprovider.visa.k8s/v1
+kind: VISACloudSecurityGroup
+metadata:
+  labels:
+    app.kubernetes.io/name: visa-k8s-controller
+  name: test-sec-group
