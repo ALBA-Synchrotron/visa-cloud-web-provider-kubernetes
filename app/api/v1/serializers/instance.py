@@ -31,11 +31,11 @@ def instance_to_dict(f, only_address: bool = False, only_id: bool = False,
         "flavourId": spec.get("flavour").get("name"),
         "imageId": spec.get("image").get("name"),
         "createdAt": metadata.get("creationTimestamp"),
-        "address": status.get("address", ""),
+        "address": status.get("address", None),
         "securityGroups": [i.get("name") for i in spec.get("securityGroups", [])],
         "fault": {
             "message": fault.get("message", ""),
-            "code": fault.get("code", ""),
+            "code": fault.get("code", 0),
             "details": fault.get("details", ""),
             "createdAt": fault.get("createdAt", ""),
         }
