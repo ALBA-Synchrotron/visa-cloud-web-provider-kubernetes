@@ -9,8 +9,11 @@ def instance_to_dict(f, only_address: bool = False, only_id: bool = False,
                      only_sec_groups: bool = False, creation_request: bool = False) -> dict | list:
     metadata: dict = f.get("metadata")
     spec: dict = f.get("spec")
-    status: dict = f.get("status", {}) if creation_request else {"state": "BUILDING"}
+    status: dict = f.get("status", {})
     fault: dict = status.get("error", {})
+
+    if not status and creation_request:
+        status = {"state": "BUILDING"}
 
     if only_address:
         return {"address": metadata.get("address", ""), "id": metadata.get("name")}
