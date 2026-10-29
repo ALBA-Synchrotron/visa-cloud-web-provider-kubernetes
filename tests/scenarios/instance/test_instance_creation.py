@@ -49,7 +49,7 @@ def test_create_instance(app, client, api_key_authentication) -> None:
 
         assert r.status_code == HTTPStatus.OK
         assert isinstance(r_data, list)
-        assert body.get("name") in [i.get("name") for i in r_data]
+        assert body.get("metadata").get("id") in [i.get("name") for i in r_data]
 
 
 def test_create_instance_invalid_payload(app, client, api_key_authentication) -> None:
