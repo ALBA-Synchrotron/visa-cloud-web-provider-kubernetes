@@ -10,7 +10,7 @@ class BaseConfig:
     LOG_LEVEL: str = os.environ.get("LOG_LEVEL", "DEBUG")
     TEST_MODE: str = ""
     HOST: str = os.getenv("API_HOST", "0.0.0.0")
-    PORT: int = int(os.getenv("API_PORT", "5000"))
+    PORT: int = int(os.getenv("API_PORT", "8000"))
     AUTO_START_INSTANCES_ON_CREATION: bool = bool(os.getenv(
         "AUTO_START_INSTANCES_ON_CREATION", True
     ))
