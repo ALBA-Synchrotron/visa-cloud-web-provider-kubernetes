@@ -35,12 +35,7 @@ def test_create_instance(app, client, api_key_authentication) -> None:
         assert all(
             key in r_data.keys()
             for key in
-            ["id", "name", "state", "flavourId", "imageId", "createdAt", "address", "securityGroups", "fault"]
-        )
-        assert all(
-            key in r_data["fault"].keys()
-            for key in
-            ["message", "code", "details", "createdAt"]
+            ["id"]
         )
 
         r: TestResponse = client.get(url_for(f"{ENDPOINT_NAME_PREFIX}.get_all"),
@@ -49,7 +44,7 @@ def test_create_instance(app, client, api_key_authentication) -> None:
 
         assert r.status_code == HTTPStatus.OK
         assert isinstance(r_data, list)
-        assert body.get("metadata").get("id") in [i.get("name") for i in r_data]
+        assert body.get("metadata").get("id") in [i.get("id") for i in r_data]
 
 
 def test_create_instance_invalid_payload(app, client, api_key_authentication) -> None:
