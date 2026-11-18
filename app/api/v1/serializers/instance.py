@@ -4,6 +4,20 @@ from flask import current_app
 from app.utils.exceptions import InvalidPayloadFormat
 from app.labels.kubernetes import CLOUD_PROVIDER_PREFIX
 
+def get_instance_effective_state(f) -> str:
+    spec: dict = f.get("spec")
+    status: dict = f.get("status", {})
+    metadata: dict = f.get("metadata")
+
+    desired_state: str = spec.get("desiredState", "STARTING")
+    current_state: str = status.get("state", "STARTING")
+    observed_gen: int = status.get("observedGeneration", 1)
+    current_gen: int = metadata.get("generation", 1)
+
+    if observed_gen != current_gen or current_state != desired_state:
+        return "STARTING" if desired_state == "ACTIVE" else "STOPPING"
+    return current_state
+
 
 def instance_to_dict(f, only_address: bool = False, only_id: bool = False,
                      only_sec_groups: bool = False) -> dict | list:
@@ -24,7 +38,7 @@ def instance_to_dict(f, only_address: bool = False, only_id: bool = False,
     return {
         "id": metadata.get("name"),
         "name": metadata.get("labels").get(f"{CLOUD_PROVIDER_PREFIX}/visa-name"),
-        "state": status.get("state", "STARTING"),
+        "state": get_instance_effective_state(f),
         "flavourId": spec.get("flavour").get("name"),
         "imageId": spec.get("image").get("name"),
         "createdAt": metadata.get("creationTimestamp"),
@@ -40,7 +54,7 @@ def instance_to_dict(f, only_address: bool = False, only_id: bool = False,
 
 
 def instance_to_json(instances, only_address: bool = False, only_id: bool = False,
-                     only_sec_groups: bool = False, creation_request: bool = False) -> bytes:
+                     only_sec_groups: bool = False) -> bytes:
     if isinstance(instances, dict):
         return orjson.dumps(
             instance_to_dict(instances, only_address=only_address, only_id=only_id, only_sec_groups=only_sec_groups))
